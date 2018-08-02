@@ -20,5 +20,19 @@
   "bugs": {
     "url": "https://github.com/collierrgbsitisfise/proxy-server/issues"
   },
-  "homepage": "https://github.com/collierrgbsitisfise/proxy-server#readme"
+  "homepage": "https://github.com/collierrgbsitisfise/proxy-server#readme",
+  "dependencies": {
+    "@types/bluebird": "^3.5.23",
+    "@types/cors": "^2.8.4",
+    "@types/express": "^4.16.0",
+    "@types/mongoose": "^5.2.3",
+    "@types/request": "^2.47.1",
+    "@types/request-promise": "^4.1.42",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.6",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  }
 }
