@@ -8,6 +8,9 @@ class RedisClient {
 
     constructor(host: string) {
         this.host = host;
+    }
+ 
+    public connect(): void {
         this.redisClient = redis.createClient();
     }
 
@@ -19,7 +22,7 @@ class RedisClient {
 
         this.redisClient.set(key, value);
     }
-    
+
     public async getValue(key:string): Promise<any> {
         try {
             let result = this.redisClient.getAsync(key);

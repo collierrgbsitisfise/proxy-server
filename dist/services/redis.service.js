@@ -15,6 +15,8 @@ class RedisClient {
     constructor(host) {
         this.redisClient = null;
         this.host = host;
+    }
+    connect() {
         this.redisClient = redis.createClient();
     }
     setValue(key, value) {
