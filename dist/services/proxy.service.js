@@ -9,30 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const proxy_model_1 = require("./../models/proxy.model");
-const url = require("url");
-exports.proxyRequest = (req, res) => __awaiter(this, void 0, void 0, function* () {
-    let uri;
-    let result;
-    const { query } = url.parse(req.url, true);
-    uri = query.uri;
-    try {
-        const allProxies = yield proxy_model_1.default.find({}).exec();
-        res.send(allProxies);
+class ProxyService {
+    constructor() { }
+    getProxyList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const allProxies = yield proxy_model_1.default.find({}).exec();
+                return {
+                    data: allProxies,
+                    error: null
+                };
+            }
+            catch (err) {
+                return {
+                    data: err,
+                    error: true
+                };
+            }
+        });
     }
-    catch (err) {
-        res.status(500).send(err);
-    }
-    // try {
-    //   result = await rp.get(uri);
-    // } catch (err) {
-    //   result = err;
-    // }
-    // res.send({
-    //   Method: req.method,
-    //   Body: req.body,
-    //   Headers: req.headers,
-    //   uri,
-    //   result
-    // });
-});
-//# sourceMappingURL=main.cntrl.js.map
+}
+exports.default = ProxyService;
+//# sourceMappingURL=proxy.service.js.map

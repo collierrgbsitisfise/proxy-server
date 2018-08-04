@@ -15,6 +15,7 @@ db.connect()
   .then(res => console.log(res))
   .catch(err => console.log('Error db connection...',err));
 
+/*midlewars*/
 app.use(cors());
 app.use(bodyParser.json());
 app.use((req: Request, res: Response, next: any) => {

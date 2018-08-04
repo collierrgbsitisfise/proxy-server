@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import Proxy from './../models/proxy.model';
 import { Request, Response } from "express";
 import * as rp from "request-promise";
 import * as url from "url";
@@ -12,15 +13,21 @@ export const proxyRequest = async (req: Request, res: Response) => {
   uri = query.uri;
   
   try {
-    result = await rp.get(uri);
+    const allProxies = await Proxy.find({}).exec();
+    res.send(allProxies);
   } catch (err) {
-    result = err;
+    res.status(500).send(err);
   }
-  res.send({
-    Method: req.method,
-    Body: req.body,
-    Headers: req.headers,
-    uri,
-    result
-  });
+  // try {
+  //   result = await rp.get(uri);
+  // } catch (err) {
+  //   result = err;
+  // }
+  // res.send({
+  //   Method: req.method,
+  //   Body: req.body,
+  //   Headers: req.headers,
+  //   uri,
+  //   result
+  // });
 };

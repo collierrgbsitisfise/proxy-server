@@ -12,6 +12,7 @@ const db = new db_mongo_connector_1.default('ds247330.mlab.com', 'easy-links-db'
 db.connect()
     .then(res => console.log(res))
     .catch(err => console.log('Error db connection...', err));
+/*midlewars*/
 app.use(cors());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
