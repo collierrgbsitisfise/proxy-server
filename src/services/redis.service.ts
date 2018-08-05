@@ -15,7 +15,6 @@ class RedisClient {
     }
 
     public setValue(key: string, value:any): void {
-
         if (typeof value !== 'string') {
             value = JSON.stringify(value);
         }
@@ -35,7 +34,7 @@ class RedisClient {
         try {
             let result = await this.redisClient.getAsync(key);
             return {
-                data: result,
+                data: JSON.parse(result),
                 error: null
             }
         } catch (err) {

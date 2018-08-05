@@ -36,7 +36,7 @@ class RedisClient {
             try {
                 let result = yield this.redisClient.getAsync(key);
                 return {
-                    data: result,
+                    data: JSON.parse(result),
                     error: null
                 };
             }
