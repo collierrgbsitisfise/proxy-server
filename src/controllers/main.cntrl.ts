@@ -46,15 +46,13 @@ export const proxyRequest = async (req: Request, res: Response) => {
   //   return;
   // }
   
-  console.log('it is headers');
-  console.log(req.headers);
-  result = await getHTML(uri, proxyList, req.headers);
+  result = await getHTML(uri, proxyList);
   res.send({
     data: result
   });
 };
 
-const getHTML = async (uri: string, proxyList: any[], headers: any): Promise<any> => {
+const getHTML = async (uri: string, proxyList: any[]): Promise<any> => {
   let result;
   let isError = false;
 
@@ -72,27 +70,18 @@ const getHTML = async (uri: string, proxyList: any[], headers: any): Promise<any
   // }
   
   proxyList = proxyList.filter(proxy => proxy.get("type") === "http");
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     try {
-      console.log(uri);
       let proxy = proxyList[Math.floor(Math.random() * proxyList.length)];
-      let agent = new HttpProxyAgent(`http://${proxy.ip}:${proxy.port}`);
-      headers.host = `${proxy.ip}:${proxy.port}`;
-      let options = {
-        uri,
-        method: "GET",
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16'
-        },
-        agent: agent,
-        timeout: 10000,
-        followRedirect: true
-      };
-      
-      result = await rp(options);
+      result = await rp.get({
+        url: uri,
+        method: 'GET',
+        timeout: 3000,
+        followRedirect: true,
+        proxy: `http://${proxy.ip}:${proxy.port}`
+      });
     } catch (err) {
-      console.log("I am in error ", i);
-      console.log(err.message);
+      console.log('ERROR', i);
       isError = true;
     }
     if (!isError) {

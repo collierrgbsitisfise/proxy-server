@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const HttpProxyAgent = require("http-proxy-agent");
 const rp = require("request-promise");
 const url = require("url");
 const proxy_model_1 = require("./../models/proxy.model");
@@ -43,14 +42,12 @@ exports.proxyRequest = (req, res) => __awaiter(this, void 0, void 0, function* (
     //   res.status(404).send(err.message);
     //   return;
     // }
-    console.log('it is headers');
-    console.log(req.headers);
-    result = yield getHTML(uri, proxyList, req.headers);
+    result = yield getHTML(uri, proxyList);
     res.send({
         data: result
     });
 });
-const getHTML = (uri, proxyList, headers) => __awaiter(this, void 0, void 0, function* () {
+const getHTML = (uri, proxyList) => __awaiter(this, void 0, void 0, function* () {
     let result;
     let isError = false;
     // try {
@@ -65,27 +62,19 @@ const getHTML = (uri, proxyList, headers) => __awaiter(this, void 0, void 0, fun
     //   }
     // }
     proxyList = proxyList.filter(proxy => proxy.get("type") === "http");
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         try {
-            console.log(uri);
             let proxy = proxyList[Math.floor(Math.random() * proxyList.length)];
-            let agent = new HttpProxyAgent(`http://${proxy.ip}:${proxy.port}`);
-            headers.host = `${proxy.ip}:${proxy.port}`;
-            let options = {
-                uri,
-                method: "GET",
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16'
-                },
-                agent: agent,
-                timeout: 10000,
-                followRedirect: true
-            };
-            result = yield rp(options);
+            result = yield rp.get({
+                url: uri,
+                method: 'GET',
+                timeout: 3000,
+                followRedirect: true,
+                proxy: `http://${proxy.ip}:${proxy.port}`
+            });
         }
         catch (err) {
-            console.log("I am in error ", i);
-            console.log(err.message);
+            console.log('ERROR', i);
             isError = true;
         }
         if (!isError) {

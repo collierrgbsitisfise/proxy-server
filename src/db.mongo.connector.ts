@@ -27,6 +27,7 @@ class dbMongoConnector {
         const connectPromise = function (resolve: any, reject: any): any {
             mongoose.connect(
                 dbUrl,
+                { useNewUrlParser: true },
                 (err: any) => {
                     if (err) {
                       reject(err);
