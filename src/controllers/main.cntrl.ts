@@ -10,6 +10,15 @@ import RedisClient from "./../services/redis.service";
 const RedisC = new RedisClient("redis://127.0.0.1:6379");
 RedisC.connect();
 
+export const pongRequest = async (req: Request, res: Response) => {
+  try {
+    let redisProxy = await RedisC.getValue("proxy-list");
+    res.send(redisProxy);
+  } catch  (err) {
+    res.status(500).send(err);
+  }
+}
+
 export const proxyRequest = async (req: Request, res: Response) => {
   let uri: any;
   let result: any;

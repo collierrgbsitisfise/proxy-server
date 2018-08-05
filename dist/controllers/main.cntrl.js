@@ -14,6 +14,15 @@ const proxy_model_1 = require("./../models/proxy.model");
 const redis_service_1 = require("./../services/redis.service");
 const RedisC = new redis_service_1.default("redis://127.0.0.1:6379");
 RedisC.connect();
+exports.pongRequest = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        let redisProxy = yield RedisC.getValue("proxy-list");
+        res.send(redisProxy);
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
+});
 exports.proxyRequest = (req, res) => __awaiter(this, void 0, void 0, function* () {
     let uri;
     let result;

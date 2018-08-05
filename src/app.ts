@@ -29,7 +29,8 @@ app.use((req: Request, res: Response, next: any) => {
 });
 
 
-app.all("*", mainCtrl.proxyRequest);
+app.get("/", mainCtrl.proxyRequest);
+app.get("/ping", mainCtrl.pongRequest)
 
 app.listen(app.get("port"), () => {
   console.log("run...");

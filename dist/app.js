@@ -20,7 +20,8 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.all("*", mainCtrl.proxyRequest);
+app.get("/", mainCtrl.proxyRequest);
+app.get("/ping", mainCtrl.pongRequest);
 app.listen(app.get("port"), () => {
     console.log("run...");
 });
