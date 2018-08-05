@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import { Request, Response } from "express";
 import dbMongoConnector from './db.mongo.connector';
+import RedisClient from './services/redis.service';
 import * as mainCtrl from './controllers/main.cntrl';
 
 const app: any = express();

@@ -17,7 +17,7 @@ class RedisClient {
         this.host = host;
     }
     connect() {
-        this.redisClient = redis.createClient();
+        this.redisClient = redis.createClient(this.host);
     }
     setValue(key, value) {
         if (typeof value !== 'string') {
@@ -25,10 +25,16 @@ class RedisClient {
         }
         this.redisClient.set(key, value);
     }
+    setExpValue(key, value, seconds = 60 * 60 * 24) {
+        if (typeof value !== 'string') {
+            value = JSON.stringify(value);
+        }
+        this.redisClient.set(key, value, 'EX', seconds);
+    }
     getValue(key) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let result = this.redisClient.getAsync(key);
+                let result = yield this.redisClient.getAsync(key);
                 return {
                     data: result,
                     error: null
