@@ -36,12 +36,6 @@ exports.proxyRequest = (req, res) => __awaiter(this, void 0, void 0, function* (
     catch (err) {
         res.status(500).send(err);
     }
-    // try {
-    //   result = await rp.get(uri);
-    // } catch (err) {
-    //   res.status(404).send(err.message);
-    //   return;
-    // }
     result = yield getHTML(uri, proxyList);
     res.send({
         data: result
@@ -50,17 +44,18 @@ exports.proxyRequest = (req, res) => __awaiter(this, void 0, void 0, function* (
 const getHTML = (uri, proxyList) => __awaiter(this, void 0, void 0, function* () {
     let result;
     let isError = false;
-    // try {
-    //   result = await rp.get(uri);
-    // } catch (err) {
-    //   isError = true;
-    // }
-    // if (!isError) {
-    //   return {
-    //     data: result,
-    //     error: null
-    //   }
-    // }
+    try {
+        result = yield rp.get(uri);
+    }
+    catch (err) {
+        isError = true;
+    }
+    if (!isError) {
+        return {
+            data: result,
+            error: null
+        };
+    }
     proxyList = proxyList.filter(proxy => proxy.get("type") === "http");
     for (let i = 0; i < 5; i++) {
         try {

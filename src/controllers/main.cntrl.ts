@@ -38,13 +38,6 @@ export const proxyRequest = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).send(err);
   }
-
-  // try {
-  //   result = await rp.get(uri);
-  // } catch (err) {
-  //   res.status(404).send(err.message);
-  //   return;
-  // }
   
   result = await getHTML(uri, proxyList);
   res.send({
@@ -56,18 +49,18 @@ const getHTML = async (uri: string, proxyList: any[]): Promise<any> => {
   let result;
   let isError = false;
 
-  // try {
-  //   result = await rp.get(uri);
-  // } catch (err) {
-  //   isError = true;
-  // }
+  try {
+    result = await rp.get(uri);
+  } catch (err) {
+    isError = true;
+  }
 
-  // if (!isError) {
-  //   return {
-  //     data: result,
-  //     error: null
-  //   }
-  // }
+  if (!isError) {
+    return {
+      data: result,
+      error: null
+    }
+  }
   
   proxyList = proxyList.filter(proxy => proxy.get("type") === "http");
   for (let i = 0; i < 5; i++) {
