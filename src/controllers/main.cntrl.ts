@@ -37,15 +37,15 @@ export const proxyRequest = async (req: Request, res: Response) => {
 
   if (dataFromRedis.data && !dataFromRedis.error) {
     proxyList = dataFromRedis.data;
-  }
-
-  try {
-    const allProxies = await Proxy.find({}).exec();
-
-    RedisC.setExpValue("proxy-list", allProxies, 60 * 60 * 6);
-    proxyList = allProxies;
-  } catch (err) {
-    res.status(500).send(err);
+  } else {
+    try {
+      const allProxies = await Proxy.find({}).exec();
+  
+      RedisC.setExpValue("proxy-list", allProxies, 60 * 60 * 6);
+      proxyList = allProxies;
+    } catch (err) {
+      res.status(500).send(err);
+    }
   }
   
   result = await getHTML(uri, proxyList);
